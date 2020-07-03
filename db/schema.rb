@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_01_085906) do
+ActiveRecord::Schema.define(version: 2020_07_01_091246) do
+
+  create_table "members", force: :cascade do |t|
+    t.integer "tenant_id"
+    t.integer "user_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tenant_id"], name: "index_members_on_tenant_id"
+    t.index ["user_id"], name: "index_members_on_user_id"
+  end
 
   create_table "sessions", force: :cascade do |t|
     t.string "session_id", null: false
@@ -26,6 +37,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_085906) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "plan"
     t.index ["name"], name: "index_tenants_on_name"
     t.index ["tenant_id"], name: "index_tenants_on_tenant_id"
   end
@@ -56,5 +68,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_085906) do
     t.index ["tenant_id"], name: "index_users_on_tenant_id"
   end
 
+  add_foreign_key "members", "tenants"
+  add_foreign_key "members", "users"
   add_foreign_key "tenants", "tenants"
 end
